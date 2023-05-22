@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signUp } from '../redux/reducers/authSlice';
-import validator from 'validator'
+
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 
 
 const Signup = ({ setIsSignin }) => {
@@ -10,9 +11,12 @@ const Signup = ({ setIsSignin }) => {
 
   const [registerData, setRegisterData] = useState({ lastname: "", firstname: "", email: "", password: "", confirmPassword: "" })
   const [error, setError] = useState({ status: false, message: "" })
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false)
+
 
   const handleonChange = (e) => {
-    if (error) {
+    if (error.status) {
       setError({ status: false, message: "" })
     }
     setRegisterData((prevData) => {
@@ -95,32 +99,43 @@ const Signup = ({ setIsSignin }) => {
           <label className="block text-[rgb(2,76,110)] text-sm font-bold mb-2" htmlFor="password">
             Password
           </label>
+          <div className='relative'>
           <input
             className="bg-white/60 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             name="password"
-            type="password"
+            type={isPasswordVisible ? "text" : "password"}
             placeholder="Password"
             onChange={handleonChange}
             value={registerData.password}
             required
           />
+                      {isPasswordVisible ? <AiOutlineEyeInvisible onClick={() => setIsPasswordVisible((prevState) => !prevState)} size={18} className='absolute top-[10px] right-2 text-gray-500 cursor-pointer' />
+              :
+              <AiOutlineEye onClick={() => setIsPasswordVisible((prevState) => !prevState)} size={18} className='absolute top-[10px] right-2 text-gray-500 cursor-pointer' />}
+              </div>
           <p className='text-xs mt-1 text-gray-700'>password should be 6 characters long with at least 1 special character.</p>
         </div>
         <div className="mb-6">
           <label className="block text-[rgb(2,76,110)] text-sm font-bold mb-2" htmlFor="confirmPassword">
             Confirm Password
           </label>
+          <div className='relative'>
           <input
             className="bg-white/60 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="confirmPassword"
             name="confirmPassword"
-            type="password"
+            type={isConfirmPasswordVisible ? "text" : "password"}
             placeholder="Confirm Password"
             onChange={handleonChange}
             value={registerData.confirmPassword}
             required
           />
+                      {isConfirmPasswordVisible ? <AiOutlineEyeInvisible onClick={() => setIsConfirmPasswordVisible((prevState) => !prevState)} size={18} className='absolute top-[10px] right-2 text-gray-500 cursor-pointer' />
+              :
+              <AiOutlineEye onClick={() => setIsConfirmPasswordVisible((prevState) => !prevState)} size={18} className='absolute top-[10px] right-2 text-gray-500 cursor-pointer' />}
+              </div>
+              
         </div>
         <div className="flex items-center justify-between gap-3 mb-6">
           <button
