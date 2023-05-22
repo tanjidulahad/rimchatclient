@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import CustomNotification from '../utilities/customNotification';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetSignupError, signIn } from '../redux/reducers/authSlice';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../redux/reducers/authSlice';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 
 const Signin = ({ setIsSignin }) => {
   const dispatch = useDispatch()
-  const { error: signinError } = useSelector((state) => state.auth)
+
 
   const [signInData, setSignInData] = useState({ email: "", password: "" })
   const [error, setError] = useState({ status: false, message: "" })
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-
-  useEffect(() => {
-    if (signinError.status == "error") {
-      toast.error(<CustomNotification message={signinError.message} />)
-      dispatch(resetSignupError())
-    }
-    if (signinError.status == "success") {
-      toast.success(<CustomNotification message={signinError.message} />)
-      dispatch(resetSignupError())
-    }
-  }, [signinError])
 
   const handleonChange = (e) => {
     if (error.status) {

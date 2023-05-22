@@ -7,6 +7,11 @@ import { store } from './components/redux/store.js'
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore } from 'redux-persist'
+
+let persistor = persistStore(store)
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -26,9 +31,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       icon={false}
     />
     <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
 )

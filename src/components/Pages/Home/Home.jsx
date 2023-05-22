@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AiFillPlusCircle } from "react-icons/ai"
 import { CiSearch } from "react-icons/ci"
 import { TbPhone } from "react-icons/tb"
 import ChatAvatar from '../../ChatAvatar/ChatAvatar';
 import person from "../../../assets/person.jpg"
+import { useGetUserDetailsApiQuery, userDetailsApi } from '../../redux/queryApi/queryApi';
+import { useDispatch } from 'react-redux';
+import { tokenExpired } from '../../redux/reducers/authSlice';
+import LoadingOverlay from '../../LoadingOverlay/LoadingOverlay';
+
 
 const Home = () => {
+    const {isError,isLoading,isSuccess,data,refetch}=useGetUserDetailsApiQuery(null,{refetchOnMountOrArgChange:true, pollingInterval: 24*60*60*1000 })
+    const dispatch=useDispatch()
+      useEffect(()=>{
+
+        if(isError && !data){
+            dispatch(tokenExpired())
+            dispatch(userDetailsApi.util.resetApiState())
+        }
+      },[data,isError])
     return (
+        <>
+        {
+        isLoading ? <LoadingOverlay/>
+        :
         <div className='grid grid-cols-4 h-screen'>
             <div className='col-span-1 px-8 pt-3 border-r'>
                 <div className='flex justify-between items-center border-b pb-4'>
@@ -47,6 +65,9 @@ const Home = () => {
                 </div>
             </div>
         </div>
+        }
+        </>
+        
     );
 };
 
